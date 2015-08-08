@@ -17,7 +17,7 @@ prompt "Enter a loan amount in USD($)"
 loan_amount = ''
 loop do
   loan_amount = gets.chomp
-  if loan_amount.empty? ||  loan_amount.to_f < 0
+  if loan_amount.empty? || loan_amount.to_f < 0
     prompt "Please enter a positive number (eg. 50000)"
   else
     break
@@ -55,7 +55,7 @@ months = duration.to_i * 12
 prompt "Monthly Percentage Rate: #{monthly_rate}"
 
 monthly_payment = loan_amount.to_f *
-                  ( monthly_rate /
-                  (1 - (1 + monthly_rate) **- months.to_i))
+                  (monthly_rate /
+                  (1 - (1 + monthly_rate)**-months.to_i))
 
 prompt "Fixed Monthly Payment: $#{monthly_payment.round(2)}"
