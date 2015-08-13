@@ -1,1 +1,1 @@
-# ruby_fundementals
+# ruby_fundamentals
