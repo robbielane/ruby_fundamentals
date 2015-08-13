@@ -1,17 +1,26 @@
 
-VALID_CHOICES = ['rock', 'paper', 'scissors']
+VALID_CHOICES = %w(rock paper scissors lizard spock)
 def prompt(message)
   puts("=> #{message}")
 end
 
+def win?(first, second)
+  (first == 'rock' && second == 'scissors') ||
+    (first == 'paper' && second == 'rock') ||
+    (first == 'scissors' && second == 'paper') ||
+    (first == 'lizard' && second == 'spock') ||
+    (first == 'spock' && second == 'rock') ||
+    (first == 'rock' && second == 'lizard') ||
+    (first == 'paper' && second == 'spock') ||
+    (first == 'scissors' && second == 'lizard') ||
+    (first == 'spock' && second == 'scissors') ||
+    (first == 'lizard' && second == 'paper')
+end
+
 def display_results(player, computer)
-  if (player == 'rock' && computer == 'scissors') ||
-      (player == 'paper' && computer == 'rock') ||
-      (player == 'scissors' && computer == 'paper')
+  if win?(player, computer)
     prompt("You won!")
-  elsif (player == 'rock' && computer == 'paper') ||
-      (player == 'paper' && computer == 'scissors') ||
-      (player == 'scissors' && computer == 'rock')
+  elsif win?(computer, player)
     prompt("Computer won!")
   else
     prompt("It's a tie!")
@@ -21,10 +30,23 @@ end
 loop do
   choice = ''
   loop do
-    prompt " Choose one: Rock, Paper, Scissors"
+    prompt " Choose one: Rock(r), Paper(p), Scissors(sc), Lizard(l) or Spock(sp)"
     choice = gets.chomp.downcase
-
-    if VALID_CHOICES.include?(choice)
+    case choice
+    when 'r', 'rock'
+      choice = 'rock'
+      break
+    when 'p', 'paper'
+      choice = 'paper'
+      break
+    when 'sc', 'scissors'
+      choice = 'scissors'
+      break
+    when 'l', 'lizard'
+      choice = 'lizard'
+      break
+    when 'sp', 'spock'
+      choice = 'spock'
       break
     else
       prompt("That's not a valid choice")
