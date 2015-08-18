@@ -1,3 +1,5 @@
+require 'pry'
+
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
@@ -11,7 +13,7 @@ end
 
 def display_board(brd)
   system 'clear'
-  puts "You're a #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
+  puts "You are #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
   puts ""
   puts "     |     |"
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
@@ -37,10 +39,23 @@ def empty_squares(brd)
   brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
 
+def joinor(arr, seperator, word='or')
+  arr[-1] = "#{word} #{arr.last}" if arr.size > 1
+  arr.join(seperator)
+end
+
+def find_at_risk_square(line, board, marker)
+  if board.values_at(*line).count(marker) == 2
+    board.select { |k,v| line.include?(k) && v == INITIAL_MARKER }.keys.first
+  else
+    nil
+  end
+end
+
 def player_places_piece!(brd)
   square = ""
   loop do
-    prompt "Choose a square #{empty_squares(brd).join(', ')}"
+    prompt "Choose a square #{joinor(empty_squares(brd), ', ', 'or')}"
     square = gets.chomp.to_i
     break if empty_squares(brd).include?(square)
     prompt "Sorry, that's not a valid choice"
@@ -50,7 +65,33 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece(brd)
-  square = empty_squares(brd).sample
+  square = nil
+
+  #offense
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd, COMPUTER_MARKER)
+    break if square
+  end
+
+  #defense
+  if !square
+    WINNING_LINES.each do |line|
+      square = find_at_risk_square(line, brd, PLAYER_MARKER)
+      break if square
+    end
+  end
+
+  #pick square 5
+  # if !square
+  #   binding.pry
+  #   square = 5 unless empty_squares(brd)[4] != ' '
+  # end
+
+  #pick random square
+  if !square
+    square = empty_squares(brd).sample
+  end
+
   brd[square] = COMPUTER_MARKER
 end
 
