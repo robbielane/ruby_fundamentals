@@ -82,10 +82,9 @@ def computer_places_piece(brd)
   end
 
   #pick square 5
-  # if !square
-  #   binding.pry
-  #   square = 5 unless empty_squares(brd)[4] != ' '
-  # end
+  if !square
+    square = 5 unless brd[5] != ' '
+  end
 
   #pick random square
   if !square
